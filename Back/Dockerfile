@@ -1,0 +1,8 @@
+FROM node:13.12
+
+COPY . /app
+WORKDIR /app
+RUN npm install
+ENTRYPOINT npm start
+ENV PORTDOCKER=3333
+EXPOSE 3333
