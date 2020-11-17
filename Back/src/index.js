@@ -1,9 +1,7 @@
 const express = require("express");
+const routes = require("./routes");
 const app = express();
+
 app.use(express.json());
-
-app.get('/', ((req, res) => {
-    return res.json({msg: 'return of API'})
-}))
-
-app.listen(81, console.log("Server on!"));
+app.use(routes);
+module.exports = app;

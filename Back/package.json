@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/index.js",
+    "dev": "nodemon ./src/server.js",
     "migrate": "migrate: npm run typeorm migration:run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "knex": "^0.21.12",
     "mysql2": "^2.2.5"
