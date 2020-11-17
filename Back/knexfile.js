@@ -6,10 +6,10 @@ module.exports = {
   development: {
     client: 'mysql2',
     connection: {
-      host: 'db',
+      host: process.env.HOST_NAME || 'localhost',
       database: process.env.DATABASE_NAME || 'challenge',
       user: process.env.USERNAME_DATABASE || 'levi',
-      password: process.env.PASSWORD_DATABASE || 'password',
+      password: process.env.PASSWORD_DATABASE || '123',
       port: process.env.PORT_DATABASE || '3306'
     },
     migrations: {
