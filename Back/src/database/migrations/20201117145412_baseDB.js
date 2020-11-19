@@ -29,7 +29,6 @@ exports.up = async function (knex) {
     table.collate('utf8_unicode_ci')
   })
 };
-
 exports.down = async function (knex) {
   await knex.schema.dropTable('module_student')
   await knex.schema.dropTable('student')
