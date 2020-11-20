@@ -1,4 +1,3 @@
-const { select } = require('../database/index')
 const knex = require('../database/index')
 
 module.exports = {
@@ -42,7 +41,7 @@ module.exports = {
 
       if (studentFromDatabase) {
         await knex('student').where({ id }).delete()
-        return res.status(201).json(studentFromDatabase)
+        return res.status(200).json({ msg: 'Student successfully deleted', studentFromDatabase })
       }
 
       return res.status(404).json({ msg: 'Student not found' })

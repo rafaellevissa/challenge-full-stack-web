@@ -1,0 +1,240 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Challenge of Things",
+    "description": "This is the documentation for the Challenge of Things (CoT) gamified educational platform api, for more information on the platform at [Challenge of things](http://www.challengeofthings.com). ",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "description": "HTTP"
+    }
+  ],
+  "tags": [
+    {
+      "name": "student",
+      "description": " Operations about student in the system."
+    },
+    {
+      "name": "module",
+      "description": " Operations about module in the system."
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/students": {
+      "get": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Listing of information registered in the student table",
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "description": "student Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/student"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List student",
+            "schema": {
+              "$ref": "#/definitions/student"
+            }
+          }
+        }
+      }
+    },
+    "/student": {
+      "post": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Module record",
+        "requestBody": {
+          "description": "student Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/student"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration a new student",
+            "schema": {
+              "$ref": "#/definitions/student"
+            }
+          },
+          "409": {
+            "description": "Student already registered"
+          }
+        }
+      }
+    },
+    "/student/:id": {
+      "delete": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Delete a student from database with given id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the student we want to delete",
+            "type": "number"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Student successfully deleted"
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        }
+      }
+    },
+    "/modules": {
+      "get": {
+        "tags": [
+          "module"
+        ],
+        "summary": "Listing of information registered in the module table",
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "description": "module Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/modules"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List module",
+            "schema": {
+              "$ref": "#/definitions/modules"
+            }
+          }
+        }
+      }
+    },
+    "/module": {
+      "post": {
+        "tags": [
+          "module"
+        ],
+        "summary": "Module record",
+        "requestBody": {
+          "description": "module Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/modules"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration a new module",
+            "schema": {
+              "$ref": "#/definitions/modules"
+            }
+          },
+          "409": {
+            "description": "Module already registered"
+          }
+        }
+      }
+    },
+    "/module/:id": {
+      "delete": {
+        "tags": [
+          "module"
+        ],
+        "summary": "Delete a module from database with given id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the module we want to delete",
+            "type": "number"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Module successfully deleted"
+          },
+          "404": {
+            "description": "Module not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "student": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Rafael Levi"
+        },
+        "email": {
+          "type": "string",
+          "example": "rafaellevissa@gmail.com"
+        },
+        "RA": {
+          "type": "number",
+          "example": 339494
+        },
+        "cpf": {
+          "type": "number",
+          "example": 44552333345
+        }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Desenvolvimentos de sistema 2"
+        }
+      }
+    }
+  }
+}
