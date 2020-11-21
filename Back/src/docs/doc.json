@@ -2,8 +2,8 @@
   "openapi": "3.0.1",
   "info": {
     "version": "1.0.0",
-    "title": "Challenge of Things",
-    "description": "This is the documentation for the Challenge of Things (CoT) gamified educational platform api, for more information on the platform at [Challenge of things](http://www.challengeofthings.com). ",
+    "title": "Challenge",
+    "description": "This is the documentation for the Challenge api",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
