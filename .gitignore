@@ -107,3 +107,5 @@ dist
 
 Back/package-lock.json
 Front/package-lock.json
+
+.DS_Store

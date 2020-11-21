@@ -40,6 +40,9 @@ module.exports = {
       }).first()
 
       if (studentFromDatabase) {
+        await knex('module_student').where({
+          student_id: id
+        }).delete()
         await knex('student').where({ id }).delete()
         return res.status(200).json({ msg: 'Student successfully deleted', studentFromDatabase })
       }

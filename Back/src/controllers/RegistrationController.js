@@ -7,10 +7,20 @@ module.exports = {
         .join('student', 'student.id', '=', 'module_student.student_id')
         .join('module', 'module.id', '=', 'module_student.module_id')
         .select([
-          'student.cpf',
+          'student.RA',
           'module.name'
         ])
-      return res.json(modules)
+
+      if (modules.length === 0) {
+        return res.status(404).json({ msg: 'Registration not found' })
+      }
+
+      const moduleResponse = modules.map(modules => {
+        student_RA = modules.RA
+        module_name = modules.name
+        return { student_RA, module_name }
+      })
+      return res.status(200).json(moduleResponse)
     } catch (error) {
       next(error)
     }
@@ -36,18 +46,26 @@ module.exports = {
         return res.status(404).json({ msg: 'Module not found' })
       }
 
-      const module_student = await knex('module_student').insert({
+      const userRegistered = await knex('module_student').where({
+        module_id: moduleInDatabase.id,
+        student_id: studentInDatabase.id
+      }).first()
+
+      if (userRegistered) {
+        return res.status(409).json({ msg: 'Student already registered' })
+      }
+      await knex('module_student').insert({
         module_id: moduleInDatabase.id,
         student_id: studentInDatabase.id
       })
-      return res.json(module_student)
+      return res.json({ msg: 'User successfully registered' })
     } catch (error) {
       next(error)
     }
   },
   async listAUniqueStudentRegistration(req, res, next) {
     try {
-      const { RA } = req.body
+      const { RA } = req.params
 
       const studentInDatabase = await knex('student').select('*')
         .where({ RA }).first()
@@ -56,25 +74,24 @@ module.exports = {
         return res.status(404).json({ msg: 'Student not found' })
       }
 
-      const modulesInDatabase = await knex('module_student').select('*')
+      const modulesInDatabase = await knex('module_student').select('module.name')
         .where({
           student_id: studentInDatabase.id
         })
         .join('module', 'module.id', '=', 'module_student.module_id')
 
-      if (!!modulesInDatabase) {
-        return res.status(404).json({ msg: 'Modules not registered' })
+      if (modulesInDatabase.length === 0) {
+        return res.status(406).json({ msg: 'Modules not registered' })
       }
-
       const studentAndModules = [{ studentName: studentInDatabase.name }, ...modulesInDatabase]
-      return res.json(studentAndModules)
+      return res.status(200).json(studentAndModules)
     } catch (error) {
       next(error)
     }
   },
   async listAllStudentRegistration(req, res, next) {
     try {
-      const { module_name } = req.body
+      const { module_name } = req.params
 
       const moduleInDatabase = await knex('module').select('*')
         .where({ name: module_name }).first()
@@ -83,18 +100,18 @@ module.exports = {
         return res.status(404).json({ msg: 'Module not found' })
       }
 
-      const studentsInDatabase = await knex('module_student').select('*')
+      const studentsInDatabase = await knex('module_student').select('student.name', 'student.email', 'student.RA', 'student.cpf')
         .where({
           module_id: moduleInDatabase.id
         })
         .join('student', 'student.id', '=', 'module_student.student_id')
 
-      if (!!studentsInDatabase) {
-        return res.status(404).json({ msg: 'Students not registered' })
+      if (studentsInDatabase.length === 0) {
+        return res.status(406).json({ msg: 'Students not registered' })
       }
 
       const studentAndModules = [{ moduleName: moduleInDatabase.name }, ...studentsInDatabase]
-      return res.json(studentAndModules)
+      return res.status(200).json(studentAndModules)
     } catch (error) {
       next(error)
     }

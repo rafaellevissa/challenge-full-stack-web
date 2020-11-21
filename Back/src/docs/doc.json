@@ -22,6 +22,10 @@
     {
       "name": "module",
       "description": " Operations about module in the system."
+    },
+    {
+      "name": "registration",
+      "description": " Operations about registration in the system."
     }
   ],
   "consumes": [
@@ -63,7 +67,7 @@
         "tags": [
           "student"
         ],
-        "summary": "Module record",
+        "summary": "Student record",
         "requestBody": {
           "description": "student Object",
           "required": true,
@@ -203,6 +207,132 @@
           }
         }
       }
+    },
+    "registration": {
+      "get": {
+        "tags": [
+          "registration"
+        ],
+        "summary": "Listing of information registered in the module_student table",
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "description": "registration Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/registration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List registration",
+            "schema": {
+              "$ref": "#/definitions/registration"
+            }
+          },
+          "404": {
+            "description": "Registration not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "registration"
+        ],
+        "summary": "Registration record",
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "description": "registration Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/registration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully registered"
+          },
+          "409": {
+            "description": "Student already registered"
+          },
+          "404": {
+            "description": "Module not found"
+          }
+        }
+      }
+    },
+    "/registration/listModuleToStudent/:RA": {
+      "get": {
+        "tags": [
+          "registration"
+        ],
+        "summary": "Search a student and all your modules",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "description": "RA of the student that we want search",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List student registration",
+            "schema": {
+              "$ref": "#/definitions/registration_search_user"
+            }
+          },
+          "404": {
+            "description": "Student not found"
+          },
+          "406": {
+            "description": "Modules not found"
+          }
+        }
+      }
+    },
+    "/registration/listStudentsToModule/:module_name": {
+      "get": {
+        "tags": [
+          "registration"
+        ],
+        "summary": "Search all students registered in the module",
+        "parameters": [
+          {
+            "name": "module_name",
+            "in": "path",
+            "required": true,
+            "description": "module_name of the module that we want search",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List student registration",
+            "schema": {
+              "$ref": "#/definitions/registration_search_user"
+            }
+          },
+          "404": {
+            "description": "Module not found"
+          },
+          "406": {
+            "description": "Students not found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -233,6 +363,89 @@
         "name": {
           "type": "string",
           "example": "Desenvolvimentos de sistema 2"
+        }
+      }
+    },
+    "registration": {
+      "type": "object",
+      "properties": {
+        "module_name": {
+          "type": "string",
+          "example": "Desenvolvimentos de sistema 2"
+        },
+        "student_RA": {
+          "type": "string",
+          "example": 2
+        }
+      }
+    },
+    "registration_search_user": {
+      "type": "object",
+      "properties": {
+        "student": {
+          "type": "object",
+          "properties": {
+            "studentName": {
+              "type": "string",
+              "example": "Rafael"
+            },
+            "module_info": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "module_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "student_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "name": {
+                  "type": "string",
+                  "example": "modulo teste 1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "registration_search_module": {
+      "type": "object",
+      "properties": {
+        "student": {
+          "type": "object",
+          "properties": {
+            "moduleName": {
+              "type": "string",
+              "example": "Desenvolvimento de sistemas 2"
+            },
+            "student_info": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "module_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "student_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "name": {
+                  "type": "string",
+                  "example": "modulo teste 1"
+                }
+              }
+            }
+          }
         }
       }
     }
