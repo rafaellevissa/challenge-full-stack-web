@@ -1,0 +1,38 @@
+stages:
+  - build
+  - deployToAws
+
+build:
+  image: docker
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:backgrupoa" .
+    - docker push "$CI_REGISTRY_IMAGE:backgrupoa"
+
+deployToAws:
+  stage: deployToAws
+  image: alpine
+  variables:
+    SERVER: 18.223.110.94
+    PORT: 83
+  script:
+    - apk add openssh
+    - apk add bash
+    - mkdir ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS_AWS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    # add ssh key stored in SSH_PRIVATE_KEY variable to the agent store
+    - eval $(ssh-agent -s)
+    - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY_AWS")'
+    - scp $ENV ubuntu@$SERVER:.envfsw
+    # log into Docker registry
+    - ssh ubuntu@$SERVER "echo $CI_BUILD_TOKEN | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com"
+    # stop container, remove image.
+    - ssh ubuntu@$SERVER "docker container stop backgrupoa" || true
+    - ssh ubuntu@$SERVER "docker container rm backgrupoa" || true
+    - ssh ubuntu@$SERVER "docker image rm ${CI_REGISTRY_IMAGE}:backgrupoa" || true
+    # start new container
+    - ssh ubuntu@$SERVER "docker container run -v /home/ubuntu/.envfsw:/app/.env --name backgrupoa -p $PORT:83 -d ${CI_REGISTRY_IMAGE}:backgrupoa"

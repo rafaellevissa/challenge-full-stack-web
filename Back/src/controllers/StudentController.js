@@ -13,10 +13,12 @@ module.exports = {
     try {
       const { name, email, RA, cpf } = req.body
       const [id] = await knex('student').select('*')
-        .where({ name })
-        .orWhere({ email })
-        .orWhere({ RA })
-        .orWhere({ cpf })
+        .where({
+          name: name,
+          email: email,
+          RA: RA,
+          cpf: cpf
+        })
 
       if (!id) {
         await knex('student').insert({
