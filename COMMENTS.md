@@ -30,5 +30,8 @@
 
 **deploy:**
 
-- rodando em:
+- Back rodando em:
 http://grupoa.campusmaker.tech:83
+
+- Front rodando em:
+http://grupoa.campusmaker.tech:84
