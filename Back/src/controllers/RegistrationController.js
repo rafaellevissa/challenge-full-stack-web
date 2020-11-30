@@ -8,7 +8,9 @@ module.exports = {
         .join('module', 'module.id', '=', 'module_student.module_id')
         .select([
           'student.RA',
-          'module.name'
+          'module.name',
+          'module_student.module_id',
+          'module_student.id',
         ])
 
       if (modules.length === 0) {
@@ -18,7 +20,9 @@ module.exports = {
       const moduleResponse = modules.map(modules => {
         student_RA = modules.RA
         module_name = modules.name
-        return { student_RA, module_name }
+        module_id = modules.id
+        module_registration_id = modules.module_id
+        return { student_RA, module_name, module_id, module_registration_id }
       })
       return res.status(200).json(moduleResponse)
     } catch (error) {
