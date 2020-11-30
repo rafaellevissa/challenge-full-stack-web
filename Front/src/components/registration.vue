@@ -29,7 +29,7 @@
         class="elevation-1"
       >
         <template class="buttonDelete" v-slot:[`item.actions`]="{ item }">
-          <v-icon @click="onButtonClickDelete(item.id)" large>
+          <v-icon @click="onButtonClickDelete(item.module_id)" large>
             mdi-delete
           </v-icon>
         </template>

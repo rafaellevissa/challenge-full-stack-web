@@ -14,7 +14,7 @@ module.exports = {
         ])
 
       if (modules.length === 0) {
-        return res.status(404).json({ msg: 'Registration not found' })
+        return res.status(404).json(modules)
       }
 
       const moduleResponse = modules.map(modules => {
