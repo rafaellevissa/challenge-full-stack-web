@@ -34,6 +34,43 @@ module.exports = {
     }
 
   },
+
+  async update(req, res, next) {
+    try {
+      const { id } = req.params
+
+      const {
+        name = null,
+        email = null,
+        RA = null,
+        cpf = null
+      } = req.body
+
+      const student = await knex('student').select('*').where({
+        id
+      }).first()
+
+      if (student) {
+
+        student.name = name === null ? student.name : name,
+          student.email = email === null ? student.email : email,
+          student.RA = RA === null ? student.RA : RA,
+          student.cpf = cpf === null ? student.cpf : cpf
+
+        const newStudent = await knex('student').update(student).where({
+          id
+        })
+        if (newStudent === 1) {
+          return res.status(200).json({ msg: 'Student update successfully!' })
+        }
+        return res.status(500).json({ msg: 'Internal server error' })
+      }
+      return res.status(404).json({ msg: 'Student not found' })
+    } catch (error) {
+      next(error)
+    }
+  },
+
   async delete(req, res, next) {
     try {
       const { id } = req.params

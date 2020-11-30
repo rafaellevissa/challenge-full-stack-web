@@ -115,5 +115,26 @@ module.exports = {
     } catch (error) {
       next(error)
     }
+  },
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params
+      const registration = await knex('module_student').select('*').where({
+        id
+      }).first()
+
+      if (registration) {
+        await knex('module_student').where({
+          id
+        }).delete()
+        await knex('module_student').where({ id }).delete()
+        return res.status(200).json({ msg: 'Successfully deleted registration', registration })
+      }
+
+      return res.status(404).json({ msg: 'Registration not found' })
+
+    } catch (error) {
+      next(error)
+    }
   }
 }

@@ -31,6 +31,39 @@ module.exports = {
     }
 
   },
+  async update(req, res, next) {
+    try {
+      const { id } = req.params
+
+      const {
+        name = null,
+      } = req.body
+
+      const moduleFromDatabase = await knex('module').select('*').where({
+        id
+      }).first()
+
+      if (moduleFromDatabase) {
+        const moduleNameHasExists = await knex('module').select('*').where({
+          name
+        }).first()
+        if (moduleNameHasExists) {
+          return res.status(409).json({ msg: 'Name already registered' })
+        }
+        moduleFromDatabase.name = name === null ? moduleFromDatabase.name : name
+        const newmodule = await knex('module').update(moduleFromDatabase).where({
+          id
+        })
+        if (newmodule === 1) {
+          return res.status(200).json({ msg: 'Module update successfully!' })
+        }
+        return res.status(500).json({ msg: 'Internal server error' })
+      }
+      return res.status(404).json({ msg: 'module not found' })
+    } catch (error) {
+      next(error)
+    }
+  },
   async delete(req, res, next) {
     try {
       const { id } = req.params
@@ -39,8 +72,8 @@ module.exports = {
       }).first()
 
       if (moduleFromDatabase) {
-        await knex('module_student').where({
-          module_id: id
+        await knex('module').where({
+          id
         }).delete()
         await knex('module').where({ id }).delete()
         return res.status(201).json({ msg: 'Successfully deleted module', moduleFromDatabase })

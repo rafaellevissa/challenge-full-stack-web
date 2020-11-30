@@ -1,0 +1,23 @@
+version: '3.5'
+services:
+  back:
+    build: ./Back
+    ports:
+      - 3333:81
+    environment:
+      NODE_ENV: dev
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql_challenge
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${USERNAME_DATABASE}
+      MYSQL_PASSWORD: ${PASSWORD_DATABASE}
+    ports:
+      - "${PORT_DATABASE}:3306"
+    env_file:
+      .env

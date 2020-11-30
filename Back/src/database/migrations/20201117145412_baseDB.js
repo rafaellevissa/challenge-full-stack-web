@@ -1,7 +1,7 @@
 exports.up = async function (knex) {
   await knex.schema.createTable('module', table => {
     table.increments('id')
-    table.string('name').notNullable();
+    table.string('name').unique().notNullable();
     table.charset('utf8')
     table.engine('InnoDB')
     table.collate('utf8_unicode_ci')
@@ -13,8 +13,8 @@ exports.up = async function (knex) {
     table.increments('id')
     table.string('name').notNullable().unique();
     table.string('email').notNullable().unique();
-    table.integer('RA').notNullable().unique();
-    table.integer('cpf').notNullable().unique();
+    table.string('RA').notNullable().unique();
+    table.string('cpf').notNullable().unique();
     table.charset('utf8')
     table.engine('InnoDB')
     table.collate('utf8_unicode_ci')

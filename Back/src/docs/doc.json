@@ -118,6 +118,40 @@
             "description": "Student not found"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Update a student from database with given id",
+        "requestBody": {
+          "description": "student Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/student"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the student we want to delete",
+            "type": "number"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Student successfully deleted"
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        }
       }
     },
     "/modules": {
@@ -206,9 +240,43 @@
             "description": "Module not found"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "module"
+        ],
+        "summary": "Update a module from database with given id",
+        "requestBody": {
+          "description": "Module Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/modules"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the module we want to update",
+            "type": "number"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Module successfully deleted"
+          },
+          "404": {
+            "description": "Module not found"
+          }
+        }
       }
     },
-    "registration": {
+    "/registration": {
       "get": {
         "tags": [
           "registration"
@@ -268,6 +336,34 @@
           },
           "404": {
             "description": "Module not found"
+          }
+        }
+      }
+    },
+    "/registration:id": {
+      "delete": {
+        "tags": [
+          "registration"
+        ],
+        "summary": "Delete a registration from database with given id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the registration we want to delete",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted registration"
+          },
+          "404": {
+            "description": "Registration not found"
           }
         }
       }
