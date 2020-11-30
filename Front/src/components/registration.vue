@@ -91,6 +91,7 @@ export default {
     },
     registrationGet() {
       axios.get(this.api + "/registration").then((res) => {
+        console.log(res.data);
         this.registrations = res.data;
       });
     },
